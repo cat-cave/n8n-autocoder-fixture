@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --test 'tests/**/*.test.*'"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

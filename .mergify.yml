@@ -1,0 +1,44 @@
+# .mergify.yml — recommended config for n8n-autocoder-driven projects.
+#
+# Check name `test` matches the GHA job in .github/workflows/test.yml.
+# Tune batch_size / max_parallel_checks up if you have many autocoder PRs/day.
+queue_rules:
+  - name: autocoder
+    queue_conditions:
+      - check-success=test
+      - -draft
+      - -conflict
+      - label!=do-not-merge
+    merge_conditions:
+      - check-success=test
+    merge_method: squash
+    batch_size: 3
+    batch_max_wait_time: 10 minutes
+    checks_timeout: 60 minutes
+
+merge_queue:
+  max_parallel_checks: 1
+
+pull_request_rules:
+  # Path A: autocoder ran the review answerer and it passed → queue
+  - name: queue autocoder-approved PRs
+    conditions:
+      - -draft
+      - -closed
+      - label!=do-not-merge
+      - label=mergify-approve
+    actions:
+      queue:
+        name: autocoder
+
+  # Path B: trivial PRs (humans label these for docs/dep-bump fast-track)
+  - name: queue trivial PRs on green CI
+    conditions:
+      - check-success=test
+      - -draft
+      - -closed
+      - label!=do-not-merge
+      - label=trivial
+    actions:
+      queue:
+        name: autocoder

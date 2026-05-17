@@ -1,0 +1,27 @@
+# Minimal GHA `test` job for the n8n-autocoder fixture.
+#
+# Triggers on BOTH pull_request and push so:
+#   - PRs from the autocoder get the `test` check (Mergify gates on it),
+#   - The autocoder's pushed feature branches build before a PR is opened
+#     (lets Mergify's merge queue rebase-and-recheck cleanly).
+name: test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run tests
+        run: npm test
