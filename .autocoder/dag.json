@@ -10,19 +10,26 @@
       "title": "Add greet function",
       "scope": "Implement src/greet.ts exporting a function greet(name: string): string that returns 'Hello, <name>!'. Export it from src/index.ts as well.",
       "depends_on": [],
-      "prompt_file": ".autocoder/prompts/B-0001.md",
-      "expected_artifacts": ["src/greet.ts", "src/index.ts"],
-      "cli": "auto"
+      "expected_artifacts": [
+        "src/greet.ts",
+        "src/index.ts"
+      ],
+      "cli": "auto",
+      "prompt": "# B-0001: Add greet function\n\n## Scope\nImplement a `greet` function in this TypeScript project.\n\n## Required changes\n1. Create `src/greet.ts`:\n   - Export a named function `greet(name: string): string`.\n   - It must return the literal `` `Hello, ${name}!` `` (template string), so `greet(\"world\")` returns `Hello, world!` and `greet(\"\")` returns `Hello, !`.\n2. Update `src/index.ts`:\n   - Re-export `greet` from `./greet.js` (NodeNext ESM resolution requires the `.js` suffix on the import specifier even though the source file is `.ts`).\n   - You MAY keep or remove the existing `placeholder` export; tests do not depend on it.\n\n## Out of scope\nDo NOT add any tests or test files. Test creation is owned by task B-0002 and will fail if you pre-empt it.\n\n## Acceptance / local verification\n- `npx tsc --noEmit` exits 0.\n- `src/greet.ts` and `src/index.ts` both exist and compile under the project's strict tsconfig.\n- `greet` is importable as `import { greet } from \"./index.js\"` from within `src/`.\n\n## Constraints\n- TypeScript strict mode is on; no `any`, no `// @ts-ignore`.\n- No new dependencies. No changes to `package.json` or `tsconfig.json`.\n"
     },
     {
       "id": "B-0002",
       "kind": "behavior",
       "title": "Add greet tests",
       "scope": "Add tests/greet.test.ts using node:test that verifies greet('world') returns 'Hello, world!' and greet('') returns 'Hello, !'. Update package.json scripts to run the tests.",
-      "depends_on": ["B-0001"],
-      "prompt_file": ".autocoder/prompts/B-0002.md",
-      "expected_artifacts": ["tests/greet.test.ts"],
-      "cli": "auto"
+      "depends_on": [
+        "B-0001"
+      ],
+      "expected_artifacts": [
+        "tests/greet.test.ts"
+      ],
+      "cli": "auto",
+      "prompt": "# B-0002: Add greet tests\n\n## Scope\nAdd a test suite for the existing `greet` function (delivered by B-0001 in `src/greet.ts`).\n\n## Required changes\n1. Create `tests/greet.test.ts` using the built-in `node:test` runner:\n   - `import test from \"node:test\";`\n   - `import assert from \"node:assert/strict\";`\n   - `import { greet } from \"../src/greet.js\";` (NodeNext ESM specifier).\n   - Assert `greet(\"world\") === \"Hello, world!\"`.\n   - Assert `greet(\"\") === \"Hello, !\"`.\n2. Update `package.json`:\n   - Add a `test` script that compiles and runs the tests. A working recipe:\n     `\"test\": \"tsc && node --test dist/tests/*.test.js\"`.\n   - Update `tsconfig.json` `rootDir`/`include` only if strictly necessary to make the test compile (prefer adding a `tests` entry to `include` and broadening `rootDir` to `.`). Keep `outDir` as `dist`.\n\n## Acceptance / local verification\n- `npx tsc --noEmit` exits 0.\n- `npm test` exits 0 with both assertions passing.\n\n## Constraints\n- TypeScript strict mode stays on; no `any`, no `// @ts-ignore`.\n- No new runtime dependencies. `node:test` and `node:assert/strict` only.\n- Do NOT modify `src/greet.ts` \u2014 it is fixed by B-0001's contract.\n"
     }
   ]
 }
