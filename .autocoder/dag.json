@@ -1,0 +1,28 @@
+{
+  "version": "1",
+  "target": {
+    "branch": "feature/autocoder-hello-world"
+  },
+  "nodes": [
+    {
+      "id": "B-0001",
+      "kind": "behavior",
+      "title": "Add greet function",
+      "scope": "Implement src/greet.ts exporting a function greet(name: string): string that returns 'Hello, <name>!'. Export it from src/index.ts as well.",
+      "depends_on": [],
+      "prompt_file": ".autocoder/prompts/B-0001.md",
+      "expected_artifacts": ["src/greet.ts", "src/index.ts"],
+      "cli": "auto"
+    },
+    {
+      "id": "B-0002",
+      "kind": "behavior",
+      "title": "Add greet tests",
+      "scope": "Add tests/greet.test.ts using node:test that verifies greet('world') returns 'Hello, world!' and greet('') returns 'Hello, !'. Update package.json scripts to run the tests.",
+      "depends_on": ["B-0001"],
+      "prompt_file": ".autocoder/prompts/B-0002.md",
+      "expected_artifacts": ["tests/greet.test.ts"],
+      "cli": "auto"
+    }
+  ]
+}
