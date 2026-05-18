@@ -42,3 +42,5 @@ pull_request_rules:
     actions:
       queue:
         name: autocoder
+merge_protections_settings:
+  reporting_method: check-runs
