@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "node --test --test-reporter=spec tests/"
+    "test": "tsc && node --test dist/tests/*.test.js"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
